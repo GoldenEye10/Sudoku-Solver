@@ -1,0 +1,88 @@
+import java.awt.*;    
+import javax.swing.*; 
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import java.util.Random; 
+public class SudokuLayout{ 
+  //Global variables dont know if she will care about this
+  JFrame f = new JFrame();
+  int count = 0; 
+  public static void main(String [] args){
+    SudokuLayout sudoku = new SudokuLayout(); 
+    
+    //Generating board Doesnt need to be here all it needs is 2d array. 
+    int [][] board = new int [9][9]; 
+    Random rand = new Random();
+    for(int i = 0 ; i<81 ; i++){ 
+      
+      int x = rand.nextInt(9);
+      int y = rand.nextInt(9);
+      //System.out.print(x+" " +y); 
+      board = generateBoard(board, x, y);
+    }
+    //spliting the 2d array into 1d arrays to send the to createLayout. 
+    for(int row = 0 ;row<board.length;row++){
+      int [] arr = new int[9];
+      for(int col = 0 ; col<board[row].length;col++){ 
+        arr[col] = board[row][col]; 
+   
+  }
+       sudoku.createLayout(arr);
+    }
+    sudoku.build(); 
+  }
+    
+    public static int [][]generateBoard(int [][] board , int x, int y){ 
+      Random rand = new Random(); 
+      int randomValue = rand.nextInt(10); 
+      board[x][y] = randomValue; 
+      return board; 
+  }
+    
+    public void createLayout(int []arr){
+    
+    //grid layout consists of rows and columns
+    GridLayout layout = new GridLayout(3,3); 
+  
+    JPanel pane = new JPanel(layout); 
+    
+ 
+    //border widths
+    final int outerBorderWidth = 6;
+    final int innerBorderWidth = 1; 
+    
+    JLabel label; 
+    
+    for(int i = 0; i<arr.length;i++){
+              String str = String.valueOf(arr[i]); 
+        label = new JLabel(str,SwingConstants.CENTER);
+        
+        label.setFont(new Font("Verdana",Font.PLAIN,30));
+        label.setBorder(BorderFactory.createMatteBorder(innerBorderWidth,  innerBorderWidth, innerBorderWidth,innerBorderWidth,Color.BLACK));
+        pane.add(label);
+    }
+    //if count is even choose one color else choose another. 
+    int check = count%2;
+        if(check == 0){
+          pane.setBackground(new Color(102, 204, 255));
+        }
+        else{
+          pane.setBackground(new Color(153, 204, 255));
+        }
+        count++;
+        //System.out.println(count); 
+        
+    pane.setBorder(BorderFactory.createMatteBorder(outerBorderWidth,  outerBorderWidth, outerBorderWidth,outerBorderWidth,Color.BLACK));
+      f.add(pane);
+    f.setLayout(new GridLayout(3,3));
+    
+    f.setSize(1000,1000); 
+      
+    }
+    
+    public void build(){
+
+    f.setVisible(true); 
+    }
+    
+}
